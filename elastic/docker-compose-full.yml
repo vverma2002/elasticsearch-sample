@@ -6,8 +6,8 @@ services:
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es02
-      - cluster.initial_master_nodes=es01,es02
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
@@ -31,8 +31,8 @@ services:
     environment:
       - node.name=es02
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es01
-      - cluster.initial_master_nodes=es01,es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
@@ -44,7 +44,25 @@ services:
       - data02:/usr/share/elasticsearch/data
     networks:
       - elastic
-
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.2
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+    networks:
+      - elastic
 
   elasticvue:
     container_name: elasticvue
@@ -53,14 +71,39 @@ services:
       - "8090:8080"
     depends_on:
       - es01
-      - es02
     networks:
       - elastic
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.4.2
+    ports:
+      - "5601:5601"
+    depends_on:
+      - es01
+      - es02
+      - es03
+    networks:
+      - elastic
+#  logstash:
+#    container_name: logstash
+#    build:
+#      context: ../.logstash
+#      dockerfile: dockerfile
+#    networks:
+#      - elastic
+#    volumes:
+#      - logstash-logs:/usr/share/logstash
+#    depends_on:
+#      - elasticsearch
+#      - db
 
 volumes:
   data01:
     driver: local
   data02:
+    driver: local
+  data03:
     driver: local
 
 networks:
