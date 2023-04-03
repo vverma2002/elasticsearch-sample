@@ -1,6 +1,7 @@
 package com.vik.elastic.modal;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -22,13 +23,16 @@ import lombok.NoArgsConstructor;
 //FieldTypes
 //https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "test-field-index",writeTypeHint = WriteTypeHint.DEFAULT)
-@TypeAlias("test_table")   // hint "_class" : "test_table"   
-@Setting(replicas = 0, shards = 1)
+
+//@Mapping(runtimeFieldsPath = "/runtime-fields.json",mappingPath = "/fields-mapping.json")
+@Document(indexName = "test-field-index", writeTypeHint = WriteTypeHint.DEFAULT)
+@TypeAlias("test_field_index") // hint "_class" : "test_field_index"
+@Setting(replicas = 0, shards = 1
+//,sortFields = { "secondField", "firstField" }    
+)
 public class TestFieldIndex {
 
 	@Id
@@ -40,7 +44,7 @@ public class TestFieldIndex {
 	@Field(type = FieldType.Text)
 	private String transientText;
 
-	@ReadOnlyProperty
+	@ReadOnlyProperty // for runtime fields defined in the index mapping.
 	@Field(type = FieldType.Text)
 	private String readOnlyText;
 
@@ -57,12 +61,14 @@ public class TestFieldIndex {
 	@Field(type = FieldType.Date_Range)
 	private Range<Date> validDate;
 
-	//Non-field-backed properties
+	// Non-field-backed properties
 	@Field(type = FieldType.Keyword)
 	@WriteOnlyProperty
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getProperty() {
 		return "some value that is calculated here";
 	}
+
+	List<Date> auditDates;
 
 }
