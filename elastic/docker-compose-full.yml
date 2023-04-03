@@ -3,6 +3,7 @@ services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.2
     container_name: es01
+    hostname: elasticsearch
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
@@ -10,6 +11,8 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_CONNECT_RETRY=300"
+      - "ES_HEAP_SIZE=1g"      
       - xpack.security.enabled=false
       - http.cors.enabled=true
       - http.cors.allow-origin="*"
@@ -28,6 +31,7 @@ services:
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.2
     container_name: es02
+    hostname: elasticsearch
     environment:
       - node.name=es02
       - cluster.name=es-docker-cluster
@@ -36,17 +40,23 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
+      - "ES_CONNECT_RETRY=300"
+      - "ES_HEAP_SIZE=1g"    
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - data02:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
+      - 9301:9300
     networks:
       - elastic
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.2
     container_name: es03
+    hostname: elasticsearch
     environment:
       - node.name=es03
       - cluster.name=es-docker-cluster
@@ -55,12 +65,17 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
+      - "ES_CONNECT_RETRY=300"
+      - "ES_HEAP_SIZE=1g"    
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - data03:/usr/share/elasticsearch/data
+    ports:
+      - 9202:9200
+      - 9302:9300
     networks:
       - elastic
 

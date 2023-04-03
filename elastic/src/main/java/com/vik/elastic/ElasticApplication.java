@@ -1,6 +1,7 @@
 package com.vik.elastic;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class ElasticApplication {
 	@Autowired
 	ProductSearchService productSearchService;
 
-//	@PostConstruct
+	@PostConstruct
 	public void buildIndex() throws IOException {
 		System.out.println("hii");
 		List<Product> prepareDataset = prepareDataset();
@@ -67,6 +68,7 @@ public class ElasticApplication {
 	private List<Product> prepareDataset() throws IOException {
 		return CSVUtil.readCsvFile("fashion-products.csv").stream().map(record -> {
 			Product p = new Product();
+			p.setId(new Date().toString());
 			p.setDescription(record);
 			return p;
 		}).collect(Collectors.toList());
