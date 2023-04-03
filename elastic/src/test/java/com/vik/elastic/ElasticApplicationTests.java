@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Range;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
@@ -21,7 +23,9 @@ import com.vik.elastic.aop.TimerAnnotation;
 import com.vik.elastic.elastic.Book;
 import com.vik.elastic.elastic.ElasticGenericService;
 import com.vik.elastic.modal.Request;
+import com.vik.elastic.modal.TestFieldIndex;
 import com.vik.elastic.repository.RequestRepository;
+import com.vik.elastic.repository.TestFieldIndexRepository;
 import com.vik.elastic.util.RandomRequestGenerator;
 
 @SpringBootTest
@@ -35,6 +39,9 @@ class ElasticApplicationTests {
 
 	@Autowired
 	ElasticGenericService elasticGenericService;
+	
+	@Autowired
+	TestFieldIndexRepository testFieldIndexRepository;
 
 	// @Test
 	void singleIndexTest() {
@@ -49,8 +56,34 @@ class ElasticApplicationTests {
 		List<Book> books = IntStream.range(13, 14).mapToObj(i -> createBook(i)).collect(Collectors.toList());
 		elasticGenericService.index(books);
 	}
+	
+	 @Test
+	void testFieldIndexRepository() {
 
-	@Test
+		TestFieldIndex t= new TestFieldIndex();
+		String id = new Date().toString();
+		t.setId(id);
+		t.setName("Vikrant Verma");
+		t.setTransientText(t.getId()+"-Transient");
+		t.setReadOnlyText(t.getId()+"-ReadOnly");
+		t.setWriteOnlyText(t.getId()+"-WriteOnly");
+		
+		t.setValidAge(Range.closed(18, 65));
+		
+		t.setValidDate(Range.closed(new Date(234234234), new Date(434234234)));
+		
+		System.out.println("saving testFieldIndex:\n"+t);
+		testFieldIndexRepository.save(t);
+		
+		TestFieldIndex t2 =	testFieldIndexRepository.findById(id).get();
+		System.out.println("retrieved testFieldIndex:\n"+t2);
+		
+		SearchHit<TestFieldIndex> t3 =	testFieldIndexRepository.findByName("vikrant").getSearchHit(0);
+		System.out.println("retrieved by vikrant testFieldIndex:\n"+t3);
+		
+	}
+
+	//@Test
 	void bulkIndexTestRequest() {
 		long start = 0;
 		long end = 1;

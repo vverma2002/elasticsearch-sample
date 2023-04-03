@@ -29,7 +29,7 @@ public class ElasticApplication {
 	@Autowired
 	ProductSearchService productSearchService;
 
-	@PostConstruct
+	//@PostConstruct
 	public void buildIndex() throws IOException, InterruptedException {
 		System.out.println("hii");
 		List<Product> prepareDataset = prepareDataset();

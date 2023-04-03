@@ -9,6 +9,11 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+//FieldTypes
+//https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
+
+	
 @Document(indexName = "productindex")
 //@Setting(replicas = 3, shards = 1)
 //@Setting(replicas = 0, shards = 3)
