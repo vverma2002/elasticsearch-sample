@@ -34,6 +34,9 @@ public class Book implements HasId {
 	@Field(type = FieldType.Text, name = "desc")
 	private String description;
 
+	@Field(type = FieldType.Text, name = "summary")
+	private String summary;
+
 	@Field(type = FieldType.Keyword, name = "manufacturer")
 	private String publisher;
 
@@ -64,10 +67,10 @@ public class Book implements HasId {
 	public boolean isSimilarDocument(Object existingBook) {
 		if (existingBook instanceof Book) {
 			Book oldBook = (Book) existingBook;
-System.out.println("oldBook:"+oldBook.getPrice()+": now price"+price);
+			System.out.println("oldBook:" + oldBook.getPrice() + ": now price" + price);
 			if (oldBook.getPrice() >= price) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
