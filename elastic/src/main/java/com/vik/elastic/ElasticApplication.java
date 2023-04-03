@@ -30,39 +30,27 @@ public class ElasticApplication {
 	ProductSearchService productSearchService;
 
 	@PostConstruct
-	public void buildIndex() throws IOException {
+	public void buildIndex() throws IOException, InterruptedException {
 		System.out.println("hii");
 		List<Product> prepareDataset = prepareDataset();
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
-		prepareDataset.addAll(prepareDataset());
+		
+		for (int i = 0; i < 50; i++) {
+			prepareDataset.addAll(prepareDataset());
+		}
+		
 		System.out.println("saving: " + prepareDataset.size());
 
 		productService.createProductIndexBulk(prepareDataset);
-
+		
+//		Thread.currentThread().sleep(5000);
+		
 		productSearchService.createProductIndexBulk(prepareDataset);
 
+//		Thread.currentThread().sleep(5000);
+		
 		productSearchService.createProductIndexBulkNative(prepareDataset);
+		
+//		Thread.currentThread().sleep(5000);
 	}
 
 	private List<Product> prepareDataset() throws IOException {

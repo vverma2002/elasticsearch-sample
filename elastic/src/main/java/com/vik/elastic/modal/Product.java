@@ -4,11 +4,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Document(indexName = "productindex")
+//@Setting(replicas = 3, shards = 1)
+//@Setting(replicas = 0, shards = 3)
+@Setting(replicas = 0, shards = 1)
 @Data
 @NoArgsConstructor
 public class Product {
