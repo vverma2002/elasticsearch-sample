@@ -1,0 +1,50 @@
+{
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "nameEn": {
+      "type": "text",
+      "analyzer": "en_name_analyzer",
+      "search_analyzer": "standard",
+      "fields": {
+        "key": {
+          "type": "keyword"
+        }
+      }
+    },
+    "nameAr": {
+      "type": "text",
+      "analyzer": "ar_name_analyzer",
+      "fields": {
+        "key": {
+          "type": "keyword"
+        }
+      }
+    },
+    "nameEnCopy": {
+      "type": "text"
+    },
+    "gender": {
+      "type": "keyword"
+    },
+    "dateOfBirth": {
+      "type": "date",
+      "format": "dd-MM-yyyy"
+    },
+    "favouriteNumber": {
+      "type": "integer"
+    },
+    "placeOfBirth": {
+      "type": "nested",
+      "properties": {
+        "en": {
+          "type": "keyword"
+        },
+        "ar": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

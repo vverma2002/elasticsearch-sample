@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "analyzer": {
+      "en_name_analyzer": {
+        "type": "custom",
+        "tokenizer": "whitespace",
+        "filter": [
+          "lowercase",
+          "2_10_edge_n_grams"
+        ]
+      },
+      "ar_name_analyzer": {
+        "type": "custom",
+        "tokenizer": "whitespace",
+        "filter": [
+          "reverse",
+          "2_10_edge_n_grams",
+          "reverse"
+        ]
+      }
+    },
+    "filter": {
+      "2_10_edge_n_grams": {
+        "type": "edge_ngram",
+        "min_gram": 2,
+        "max_gram": 10
+      }
+    }
+  }
+}
+
+
+/*
+{
+	"_source": false,
+	"aggregations": {
+		"placeOfBirth.en": {
+			"aggregations": {
+				"placeOfBirth": {
+					"terms": {
+						"field": "placeOfBirth.en"
+					}
+				}
+			},
+			"nested": {
+				"path": "placeOfBirth"
+			}
+		},
+		"range.dateOfBirth": {
+			"date_range": {
+				"field": "dateOfBirth",
+				"ranges": [
+					{
+						"from": "01-01-1973",
+						"to": "01-01-1975"
+					},
+					{
+						"from": "01-01-1975",
+						"to": "01-01-1976"
+					}
+				]
+			}
+		},
+		"gender": {
+			"terms": {
+				"field": "gender"
+			}
+		},
+		"favouriteNumber": {
+			"terms": {
+				"field": "favouriteNumber"
+			}
+		}
+	},
+	"query": {
+		"bool": {
+			"must": [
+				{
+					"range": {
+						"dateOfBirth": {
+							"gt": "01-01-1970",
+							"lt": "01-01-1980"
+						}
+					}
+				}
+			]
+		}
+	}
+}
+*/

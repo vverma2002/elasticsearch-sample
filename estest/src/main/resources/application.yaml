@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test_db
+    username: postgres
+    password: postgres
+    platform: postgres
+
+logging:
+  level:
+    org:
+      apache:
+        http: debug
+      springframework:
+        jdbc:
+          core: info

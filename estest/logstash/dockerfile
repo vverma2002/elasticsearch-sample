@@ -1,0 +1,5 @@
+FROM docker.elastic.co/logstash/logstash:8.4.3
+COPY postgresql-42.5.0.jar /usr/share/logstash/lib/postgresql-42.5.0.jar
+COPY logstash.conf /etc/logstash/conf.d/logstash.conf
+
+ENTRYPOINT /usr/share/logstash/bin/logstash -f /etc/logstash/conf.d/logstash.conf --log.level=info
