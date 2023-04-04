@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "29e047c0-08df-49a4-be51-e0a48be765e9",
+		"name": "ES TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23781642"
+	},
+	"item": [
+		{
+			"name": "Facets",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rangeFields\": [\n        {\n            \"field\": \"dateOfBirth\",\n            \"type\": \"date\",\n            \"min\": \"01.01.1970\",\n            \"max\": \"01.01.1980\"\n        }\n    ],\n    \"facets\": [\n        {\n            \"path\": \"placeOfBirth\",\n            \"field\": \"en\"\n        },\n        {\n            \"field\": \"gender\"\n        },\n        {\n            \"field\": \"favouriteNumber\"\n        }\n    ],\n    \"rangeFacets\": [\n        {\n            \"field\": \"dateOfBirth\",\n            \"type\": \"date\",\n            \"ranges\": [\n                {\n                    \"to\": \"01-01-1975\",\n                    \"from\": \"01-01-1973\"\n                },\n                {\n                     \"to\": \"01-01-1976\",\n                    \"from\": \"01-01-1975\"\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/facets/USERS",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"facets",
+						"USERS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create index",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/es/create/index/USERS",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"es",
+						"create",
+						"index",
+						"USERS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reindex",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/es/reindex/USERS",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"es",
+						"reindex",
+						"USERS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"valueFields\": [\n        {\n            \"field\": \"nameEn\",\n            \"type\": \"string\",\n            \"value\": \"Andreas\"\n        }\n    ],\n    \"page\": {\n        \"num\": 1,\n        \"size\": 3\n    },\n    \"sorts\": [\n        {\n            \"field\": \"id\",\n            \"sortOperation\": \"asc\"\n        }\n    ],\n    \"fields\": [\"nameEn\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add ids",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ids\": [1]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"updates\": [\n        {\n            \"id\": 1,\n            \"updateField\": {\n                \"field\": \"placeOfBirth\",\n                \"value\": {\n                    \"en\": \"Canada\",\n                    \"ar\": \"Canada\"\n                }\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wildcard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/users/search/es/adr",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"search",
+						"es",
+						"adr"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/generate/users/1000000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"generate",
+						"users",
+						"1000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Index",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/es/index/USERS",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"es",
+						"index",
+						"USERS"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
